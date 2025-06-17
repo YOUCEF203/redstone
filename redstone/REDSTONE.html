@@ -1,68 +1,76 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redstone._. - الصفحة الرسمية</title>
-    <!-- Favicon (Browser Tab Icon) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://yt3.googleusercontent.com/3D0orf-64saDk-WxC8-ohQr1JukGvrQnlK_IxtiGEz4VT7heOxXY0xE8dvjB0Hr943H2jqAvxw=s160-c-k-c0x00ffffff-no-rj">
-    <!-- Tailwind CSS via CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Animate On Scroll (AOS) Library for animations -->
+    <!-- AOS Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            overflow-x: hidden;
-            background-color: #111827; /* bg-gray-900 */
-        }
-        .gradient-text {
-            background-image: linear-gradient(to right, #f97316, #ef4444, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .glowing-border {
-            box-shadow: 0 0 15px #ef4444, 0 0 25px #ef4444;
-        }
-        .hero-section {
-            position: relative;
-            z-index: 1;
-        }
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
-        }
-        .coming-soon-section {
-            background: linear-gradient(45deg, #ef4444, #f97316);
-            border-radius: 20px;
-            padding: 50px;
-            text-align: center;
-        }
+        body { font-family: 'Cairo', sans-serif; overflow-x: hidden; background-color: #111827; }
+        .gradient-text { background-image: linear-gradient(to right, #f97316, #ef4444, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent; }
+        .glowing-border { box-shadow: 0 0 15px #ef4444, 0 0 25px #ef4444; }
+        .hero-section { position: relative; z-index: 1; }
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        .post-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2); }
+        .coming-soon-section { background: linear-gradient(45deg, #ef4444, #f97316); border-radius: 20px; padding: 50px; text-align: center; }
     </style>
 </head>
 <body class="text-white antialiased">
 
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300">
+        <div id="modal-content" class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md transform transition-transform duration-300 scale-95">
+            <!-- Password Prompt -->
+            <div id="password-section">
+                <h3 class="text-2xl font-bold mb-4 text-center gradient-text">لوحة التحكم</h3>
+                <p class="text-gray-400 mb-6 text-center">الرجاء إدخال الكود السري للوصول.</p>
+                <input type="password" id="secret-code-input" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="••••••••">
+                <p id="error-message" class="text-red-500 text-sm mt-2 text-center hidden">الكود غير صحيح. حاول مرة أخرى.</p>
+                <button id="login-button" class="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-all">دخول</button>
+            </div>
+            <!-- Post Form -->
+            <div id="post-form-section" class="hidden">
+                <h3 class="text-2xl font-bold mb-6 text-center gradient-text">إضافة منشور جديد</h3>
+                <form id="post-form">
+                    <div class="mb-4">
+                        <label for="post-title" class="block mb-2 text-sm font-medium text-gray-300">عنوان المنشور</label>
+                        <input type="text" id="post-title" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="post-image" class="block mb-2 text-sm font-medium text-gray-300">رابط صورة المنشور</label>
+                        <input type="url" id="post-image" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="post-description" class="block mb-2 text-sm font-medium text-gray-300">وصف قصير</label>
+                        <textarea id="post-description" rows="3" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-red-500" required></textarea>
+                    </div>
+                    <button type="submit" id="publish-button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all">
+                        <span id="publish-text">نشر الآن</span>
+                        <span id="publish-spinner" class="hidden animate-spin">◌</span>
+                    </button>
+                </form>
+            </div>
+            <button id="close-modal-button" class="absolute top-4 left-4 text-gray-400 hover:text-white">&times;</button>
+        </div>
+    </div>
+
     <!-- Header -->
-    <header class="bg-gray-900/70 backdrop-blur-sm sticky top-0 z-50">
+    <header class="bg-gray-900/70 backdrop-blur-sm sticky top-0 z-40">
+        <!-- ... Header content remains the same ... -->
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="https://www.facebook.com/oscare.tt.io" target="_blank" class="text-2xl font-bold gradient-text hover:opacity-80 transition-opacity">Redstone._.</a>
             <nav class="hidden md:flex space-x-reverse space-x-6 items-center">
                 <a href="#about" class="hover:text-orange-400 transition-colors duration-300">عن الصفحة</a>
-                <a href="#features" class="hover:text-orange-400 transition-colors duration-300">المميزات</a>
+                <a href="#posts" class="hover:text-orange-400 transition-colors duration-300">المنشورات</a>
                 <a href="#social" class="hover:text-orange-400 transition-colors duration-300">تواصل</a>
                 <a href="https://www.facebook.com/oscare.tt.io" target="_blank" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg">
                     تابعنا الآن
@@ -74,7 +82,7 @@
         </div>
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
              <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded-md">عن الصفحة</a>
-             <a href="#features" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded-md">المميزات</a>
+             <a href="#posts" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded-md">المنشورات</a>
              <a href="#social" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded-md">تواصل</a>
              <a href="https://www.facebook.com/oscare.tt.io" target="_blank" class="block w-full text-center mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">تابعنا الآن</a>
         </div>
@@ -83,6 +91,7 @@
     <main>
         <!-- Hero Section -->
         <section class="hero-section min-h-screen flex items-center bg-cover bg-center" style="background-image: url('https://scontent.fblj1-2.fna.fbcdn.net/v/t39.30808-6/507964290_1423504115666269_8554276897807999624_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=poXYk2TWceQQ7kNvwFWhdKc&_nc_oc=AdnpvOb7KXF9d8VWPruS8Df12zvx2l4iIpIO0IC2CXF2HhVIoSWh8yGQqwle0ATPsG4&_nc_zt=23&_nc_ht=scontent.fblj1-2.fna&_nc_gid=dAKP16ZmZcJwjvnAqNb2NA&oh=00_AfNWZ7s5BObKKgKj2SQkRlI3b5iOMo7DsBiWQY-4I8hijA&oe=68565062');">
+            <!-- ... Hero content remains the same ... -->
             <div id="particles-js"></div>
             <div class="container mx-auto px-6 text-center relative z-10">
                 <img data-aos="zoom-in" src="https://yt3.googleusercontent.com/3D0orf-64saDk-WxC8-ohQr1JukGvrQnlK_IxtiGEz4VT7heOxXY0xE8dvjB0Hr943H2jqAvxw=s160-c-k-c0x00ffffff-no-rj" alt="Channel Logo" class="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full border-4 border-red-500 glowing-border mb-6">
@@ -94,8 +103,8 @@
                     <span class="font-bold text-lg">1.9 ألف متابع وأكثر!</span>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="600">
-                    <a href="#features" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 hover:scale-105 shadow-lg">
-                        اكتشف المزيد
+                    <a href="#posts" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 hover:scale-105 shadow-lg">
+                        شاهد المنشورات
                     </a>
                 </div>
             </div>
@@ -103,6 +112,7 @@
 
         <!-- About Section -->
         <section id="about" class="py-20 bg-gray-900">
+            <!-- ... About section remains the same ... -->
              <div class="container mx-auto px-6">
                 <div class="text-center mb-12" data-aos="fade-down">
                     <h3 class="text-4xl font-bold">قصتنا</h3>
@@ -125,44 +135,23 @@
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section id="features" class="py-20 bg-gray-800">
+        <!-- Latest Posts Section -->
+        <section id="posts" class="py-20 bg-gray-800">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16" data-aos="fade-down">
-                    <h3 class="text-4xl font-bold">مميزات القناة</h3>
-                    <p class="text-orange-400 mt-2">ماذا ينتظرك في عالمنا؟</p>
+                    <h3 class="text-4xl font-bold">أحدث المنشورات</h3>
+                    <p class="text-orange-400 mt-2">آخر إبداعاتنا ومغامراتنا</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Feature Card 1 -->
-                    <div data-aos="fade-up" class="feature-card bg-gray-900 p-8 rounded-xl text-center transition-all duration-300">
-                        <div class="bg-red-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">شروحات احترافية</h4>
-                        <p class="text-gray-400">تعلم أسرار الريدستون وأفضل تقنيات اللعب خطوة بخطوة.</p>
-                    </div>
-                    <!-- Feature Card 2 -->
-                    <div data-aos="fade-up" data-aos-delay="200" class="feature-card bg-gray-900 p-8 rounded-xl text-center transition-all duration-300">
-                        <div class="bg-red-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                           <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.494h18"></path></svg>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">مغامرات وبناء</h4>
-                        <p class="text-gray-400">انضم إلينا في سلاسل سرفايفل ملحمية ومشاريع بناء ضخمة.</p>
-                    </div>
-                    <!-- Feature Card 3 -->
-                    <div data-aos="fade-up" data-aos-delay="400" class="feature-card bg-gray-900 p-8 rounded-xl text-center transition-all duration-300">
-                        <div class="bg-red-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">مجتمع متفاعل</h4>
-                        <p class="text-gray-400">شارك في الفعاليات، استعرض إبداعاتك، وكن جزءًا من عائلتنا.</p>
-                    </div>
+                <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Posts will be dynamically inserted here -->
+                     <p id="loading-posts" class="text-center col-span-full text-gray-400">جاري تحميل المنشورات...</p>
                 </div>
             </div>
         </section>
 
         <!-- Coming Soon Section -->
         <section id="coming-soon" class="py-20 bg-gray-900">
+            <!-- ... Coming soon section remains the same ... -->
              <div class="container mx-auto px-6" data-aos="zoom-in-up">
                  <div class="coming-soon-section shadow-2xl">
                      <h3 class="text-4xl font-extrabold text-white mb-4">الفيديوهات قادمة قريباً!</h3>
@@ -178,6 +167,7 @@
 
         <!-- Social Media Section -->
         <section id="social" class="py-20 bg-gray-800">
+            <!-- ... Social media section remains the same ... -->
             <div class="container mx-auto px-6 text-center" data-aos="zoom-in">
                 <h3 class="text-4xl font-bold mb-4">تابعنا على</h3>
                 <p class="text-gray-400 mb-8">كن على تواصل دائم معنا عبر منصات التواصل الاجتماعي</p>
@@ -196,10 +186,12 @@
     <!-- Footer -->
     <footer class="bg-gray-900 border-t border-gray-700">
         <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+            <button id="admin-panel-button" class="mb-6 bg-gray-700 hover:bg-gray-600 text-sm py-2 px-4 rounded-lg transition-colors">
+                لوحة التحكم
+            </button>
             <p class="mb-4">&copy; <span id="year"></span> Redstone._.. جميع الحقوق محفوظة.</p>
             <div class="text-sm">
-                <p>
-                    تم التطوير من طرف 
+                <p>تم التطوير من طرف 
                     <a href="https://www.facebook.com/youcef.youcef.209664/" target="_blank" rel="noopener noreferrer" class="font-semibold text-orange-400 hover:text-orange-300 transition-colors">
                         ستوديوهات youcef
                     </a>
@@ -212,29 +204,173 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            once: true,
+    
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // IMPORTANT: These are placeholders. They will be replaced by the environment.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "AIza...", authDomain: "...", projectId: "...", ...{}};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- Admin Panel Logic ---
+        const SECRET_CODE = "Redstone123"; // This is the secret code. Change it to something else!
+        
+        const adminModal = document.getElementById('admin-modal');
+        const modalContent = document.getElementById('modal-content');
+        const adminPanelButton = document.getElementById('admin-panel-button');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const loginButton = document.getElementById('login-button');
+        const secretCodeInput = document.getElementById('secret-code-input');
+        const errorMessage = document.getElementById('error-message');
+        const passwordSection = document.getElementById('password-section');
+        const postFormSection = document.getElementById('post-form-section');
+        const postForm = document.getElementById('post-form');
+
+        const openModal = () => {
+            adminModal.classList.remove('hidden');
+            setTimeout(() => {
+                adminModal.classList.add('opacity-100');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        };
+
+        const closeModal = () => {
+            adminModal.classList.remove('opacity-100');
+            modalContent.classList.remove('scale-100');
+            setTimeout(() => {
+                adminModal.classList.add('hidden');
+                // Reset form state
+                passwordSection.classList.remove('hidden');
+                postFormSection.classList.add('hidden');
+                secretCodeInput.value = '';
+                errorMessage.classList.add('hidden');
+            }, 300);
+        };
+
+        adminPanelButton.addEventListener('click', openModal);
+        closeModalButton.addEventListener('click', closeModal);
+        adminModal.addEventListener('click', (e) => {
+            if (e.target === adminModal) closeModal();
         });
 
-        // Initialize Particles.js
+        loginButton.addEventListener('click', () => {
+            if (secretCodeInput.value === SECRET_CODE) {
+                passwordSection.classList.add('hidden');
+                postFormSection.classList.remove('hidden');
+            } else {
+                errorMessage.classList.remove('hidden');
+                secretCodeInput.focus();
+            }
+        });
+
+        secretCodeInput.addEventListener('input', () => {
+            errorMessage.classList.add('hidden');
+        });
+
+        // --- Firebase Firestore Logic ---
+        signInAnonymously(auth).then(() => {
+            console.log("Signed in anonymously.");
+            fetchAndDisplayPosts();
+        }).catch((error) => {
+            console.error("Anonymous sign-in failed:", error);
+        });
+
+        const postsCollectionRef = collection(db, `artifacts/${appId}/public/data/posts`);
+
+        // Publish new post
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const publishButton = document.getElementById('publish-button');
+            const publishText = document.getElementById('publish-text');
+            const publishSpinner = document.getElementById('publish-spinner');
+
+            publishText.classList.add('hidden');
+            publishSpinner.classList.remove('hidden');
+            publishButton.disabled = true;
+            
+            const title = document.getElementById('post-title').value;
+            const image = document.getElementById('post-image').value;
+            const description = document.getElementById('post-description').value;
+
+            try {
+                await addDoc(postsCollectionRef, {
+                    title: title,
+                    imageUrl: image,
+                    description: description,
+                    createdAt: serverTimestamp()
+                });
+                postForm.reset();
+                closeModal();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("حدث خطأ أثناء النشر. الرجاء المحاولة مرة أخرى.");
+            } finally {
+                publishText.classList.remove('hidden');
+                publishSpinner.classList.add('hidden');
+                publishButton.disabled = false;
+            }
+        });
+
+        // Fetch and display posts
+        function fetchAndDisplayPosts() {
+            const postsGrid = document.getElementById('posts-grid');
+            const loadingMessage = document.getElementById('loading-posts');
+            const q = query(postsCollectionRef);
+
+            onSnapshot(q, (snapshot) => {
+                postsGrid.innerHTML = ''; // Clear existing posts
+                
+                if (snapshot.empty) {
+                    postsGrid.innerHTML = `<p class="text-center col-span-full text-gray-400">لا توجد منشورات حتى الآن. كن أول من ينشر!</p>`;
+                    return;
+                }
+
+                const posts = [];
+                snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
+
+                // Sort by creation date, newest first
+                posts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                posts.forEach(post => {
+                    const postCard = document.createElement('div');
+                    postCard.className = 'post-card bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300';
+                    postCard.setAttribute('data-aos', 'fade-up');
+                    
+                    const postDate = post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('ar-EG') : 'الآن';
+                    
+                    postCard.innerHTML = `
+                        <img src="${post.imageUrl}" alt="Post Image" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x280/1f2937/ffffff?text=خطأ+في+الصورة';">
+                        <div class="p-6">
+                            <p class="text-sm text-red-400 mb-2">${postDate}</p>
+                            <h4 class="font-bold text-xl mb-3 text-white">${post.title}</h4>
+                            <p class="text-gray-400">${post.description}</p>
+                        </div>
+                    `;
+                    postsGrid.appendChild(postCard);
+                });
+
+                // Refresh AOS to apply animations to new elements
+                AOS.refresh();
+            }, (error) => {
+                console.error("Error fetching posts:", error);
+                loadingMessage.innerText = "حدث خطأ في تحميل المنشورات.";
+            });
+        }
+
+        // --- General UI Scripts ---
+        AOS.init({ duration: 800, once: true });
+        
         particlesJS('particles-js', {
-          "particles": {
-            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#ef4444" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.5, "random": false },
-            "size": { "value": 3, "random": true },
-            "line_linked": { "enable": true, "distance": 150, "color": "#f97316", "opacity": 0.4, "width": 1 },
-            "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
-          },
-          "interactivity": {
-            "detect_on": "canvas",
-            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-            "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
-          },
+          "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ef4444" }, "shape": { "type": "circle" }, "opacity": { "value": 0.5, "random": false }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#f97316", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false, "out_mode": "out" } },
+          "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } } },
           "retina_detect": true
         });
 
